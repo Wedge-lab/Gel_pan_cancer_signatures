@@ -34,7 +34,6 @@ mkdir -p $dir_input
 
 # Direct a copy of the output to a log file
 LOGFILE="${dir_output}/clinical.log"
-# exec &> >(tee "$LOGFILE")
 echo -e $run_meta | tee -a $LOGFILE
 
 # Put covariates variables together and subset samples. Set tumour_sample_platekey as index
