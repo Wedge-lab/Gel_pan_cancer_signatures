@@ -2,6 +2,12 @@ import numpy as np
 import re
 import pandas as pd
 
+def regexSearch(pattern, string, index=1):
+    try:
+        return re.search(pattern, string).group(index)
+    except AttributeError:
+        raise ValueError(f"Pattern {pattern} not found in {string}")
+
 def orderSignatures(signatures):
 
     """orderSignatures - sort signatures into a sensible ordering
@@ -11,10 +17,10 @@ def orderSignatures(signatures):
     4) signature letter - 7a,7b,7c
     """
 
-    mut_type  = np.array([re.search("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig).group(1) for sig in signatures])
-    mut_index = np.array([re.search("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig).group(2) for sig in signatures]).astype(int)
-    mut_exten = np.array([re.search("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig).group(3) for sig in signatures])
-    mut_tissue= np.array([re.search("([A-Za-z]+)([0-9]+)([a-zA-Z]*)-([a-zA-Z_]+)", sig).group(4) \
+    mut_type  = np.array([regexSearch("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig, 1) for sig in signatures])
+    mut_index = np.array([regexSearch("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig, 2) for sig in signatures]).astype(int)
+    mut_exten = np.array([regexSearch("([A-Za-z]+)([0-9]+)([a-zA-Z]*)", sig, 3) for sig in signatures])
+    mut_tissue= np.array([regexSearch("([A-Za-z]+)([0-9]+)([a-zA-Z]*)-([a-zA-Z_]+)", sig, 4) \
                           if '-' in sig else 'Z' for sig in signatures])
 
     order_exten = np.zeros(len(mut_exten))
@@ -32,3 +38,5 @@ def orderSignatures(signatures):
                        + order_tissue/1e5 \
                        + order_exten/1e7)
     return order
+
+
