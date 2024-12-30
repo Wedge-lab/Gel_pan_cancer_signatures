@@ -39,4 +39,39 @@ def orderSignatures(signatures):
                        + order_exten/1e7)
     return order
 
+def BenjiminiHochberg(pvalues, alpha=0.05):
 
+    m = len(pvalues)
+    k= np.arange(m)
+
+    order = np.argsort(pvalues)
+    passed = pvalues[order] <= alpha * k/m
+
+    return order[passed]
+
+def BH_threshold(pvalues, alpha=0.05):
+
+    passed_indices = BenjiminiHochberg(np.array(pvalues), alpha=alpha)
+    if len(passed_indices)>0:
+        return np.max(np.array(pvalues)[passed_indices]+1e-10)
+    else:
+        return 0
+
+def resultsQuery(results_df, include=[], drop=[], sorter='resample_pvalue',
+                keys=['target', 'signature', 'group', 'resample_pvalue', 'wilks_pvalue_zinb', 'wilks_pvalue_log0',
+     'model_alt_zinb', 'target_means_alt_zinb', 'target_covs_alt_zinb',
+     'power80_zinb', 'resample_power80']):
+
+    subset = np.zeros(len(results_df), dtype=bool)
+
+    for triarchy in include:
+        subset[ ((results_df.group==triarchy[0])|(triarchy[0]==""))\
+               &((results_df.signature==triarchy[1])|(triarchy[1]==""))\
+               &((results_df.target==triarchy[2])|(triarchy[2]==""))] = True
+
+    for triarchy in drop:
+        subset[ ((results_df.group==triarchy[0])|(triarchy[0]==""))\
+               &((results_df.signature==triarchy[1])|(triarchy[1]==""))\
+               &((results_df.target==triarchy[2])|(triarchy[2]==""))] = False
+
+    return results_df[keys][subset].sort_values(sorter)
