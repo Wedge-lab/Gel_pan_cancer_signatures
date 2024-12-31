@@ -1,15 +1,17 @@
-# Import standard modules
-print("Importing packages")
-import sys, os, numpy as np, pandas as pd
+import os
+import sys
+
+import numpy as np
+import pandas as pd
 import scipy.stats
 from dotenv import load_dotenv
+
 from signatures.plotting.combinedSignatures import sig_dirs
 
 load_dotenv()
-DATA_DIR = os.getenv('DATA_DIR')
+DATA_DIR = os.getenv("DATA_DIR")
 
-if __name__=="__main__":
-
+if __name__ == "__main__":
     samples_file, activities_file = sys.argv[1:]
 
     # Load samples file
@@ -17,48 +19,53 @@ if __name__=="__main__":
     print("Samples: ", len(samples_df))
 
     print("Load signature activity files")
-    activities_df = pd.DataFrame(index=samples_df['sample_id'])
-    signatures_files = {key: f"{sig_dir}/Combined_Solution_Activities.tsv" for key,sig_dir in sig_dirs.items()}
+    activities_df = pd.DataFrame(index=samples_df["sample_id"])
+    signatures_files = {
+        key: f"{sig_dir}/Combined_Solution_Activities.tsv"
+        for key, sig_dir in sig_dirs.items()
+    }
     for sig_set, sig_file in signatures_files.items():
-        # if sig_set=="CNV48":
-        #     # Reconfigure sample_ids
-        #     sig_df = pd.read_csv(sig_file, sep="\t")
-        #     # sig_df['Samples'] = sig_df.Samples.map(lambda x: x.split('.')[0]+"_"+"_".join(x.split('.tumo')[1].split("_norm")))
-        #     sig_df['Samples'] = sig_df.Samples.map(lambda x: x.split('.')[0]+"_"+"_".join(x.split('.tumo')[1].split("_norm")) \
-        #                                                      if "tumo" in x else \
-        #                                                      "_".join(np.array(x.split("_"))[[0,3,4,1,2]]) )
-        #     sig_df.set_index("Samples", inplace=True)
-        # else:
         sig_df = pd.read_csv(sig_file, sep="\t").set_index("Samples")
         sig_df[f"T{sig_set}"] = np.sum(sig_df, axis=1)
-        activities_df = pd.merge(activities_df, sig_df,
-                                 how="left", left_index=True, right_index=True).fillna(0).astype(int)
+        activities_df = (
+            pd.merge(
+                activities_df, sig_df, how="left", left_index=True, right_index=True
+            )
+            .fillna(0)
+            .astype(int)
+        )
     activities_df.index.rename("sample_id", inplace=True)
     print(activities_df.head())
     print("Activities: ", activities_df.shape)
 
     # Get activities for sample set
-    activities_df = pd.merge(samples_df[["sample_id"]], activities_df,
-                            left_on="sample_id", right_index=True,
-                            how="inner").set_index("sample_id")
+    activities_df = pd.merge(
+        samples_df[["sample_id"]],
+        activities_df,
+        left_on="sample_id",
+        right_index=True,
+        how="inner",
+    ).set_index("sample_id")
     print("Combined: ", activities_df.shape)
 
     # Generate mock signature
-    samples_df.set_index(['sample_id', 'group'], inplace=True)
-    samples_df = (samples_df-np.mean(samples_df)) / np.std(samples_df)
-    samples_df['intercept'] = np.ones(len(samples_df))
+    samples_df.set_index(["sample_id", "group"], inplace=True)
+    samples_df = (samples_df - np.mean(samples_df)) / np.std(samples_df)
+    samples_df["intercept"] = np.ones(len(samples_df))
     # Negative Binomial scipy parameterisation - n=theta, p=theta/(mu+theta)
     theta = 1
-    betaNB = np.ones(samples_df.shape[1])*1
-    mu_NB = np.exp( betaNB @ np.array(samples_df).T )
-    k_NB = scipy.stats.nbinom.rvs(theta, theta/(mu_NB+theta))
+    betaNB = np.ones(samples_df.shape[1]) * 1
+    mu_NB = np.exp(betaNB @ np.array(samples_df).T)
+    k_NB = scipy.stats.nbinom.rvs(theta, theta / (mu_NB + theta))
     # Binomial for zero inflation
-    betaZI = np.ones(samples_df.shape[1])/2
-    expit = lambda x: 1/(1+np.exp(-x))
-    mu_ZI = expit( betaNB @ np.array(samples_df).T )
+    betaZI = np.ones(samples_df.shape[1]) / 2
+    expit = lambda x: 1 / (1 + np.exp(-x))
+    mu_ZI = expit(betaNB @ np.array(samples_df).T)
     k_ZI = scipy.stats.binom.rvs(1, mu_ZI)
     activities_df["MUTmock"] = k_NB * k_ZI
-    print(f"Mock range: {np.min(activities_df['MUTmock'])} - {np.max(activities_df['MUTmock'])}")
+    print(
+        f"Mock range: {np.min(activities_df['MUTmock'])} - {np.max(activities_df['MUTmock'])}"
+    )
 
     # Save activities file
     activities_df.to_csv(activities_file, sep="\t")
