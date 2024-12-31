@@ -16,7 +16,7 @@ sig_dir=${SIG_DIR}/${sig_type}
 reference=${REF_SIGNATURES_DIR}/COSMIC_v3.3_CN_GRCh37.txt
 sample_file=${SAMPLE_LIST}
 
-dir_output=../../data/combinedSignatures_${sig_type}
+dir_output=${COMBINED_SIGS_DIR}/combinedSignatures_${sig_type}
 cohort_file=$dir_output/cohort_list.tsv
 
 # create input and output data directories

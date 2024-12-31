@@ -41,7 +41,7 @@ default_colours = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 # Signature directories
 sig_dirs = {
     "SBS288": f"{COMBINED_SIGS_DIR}/combinedSignatures_SBS288",
-    "DBS78": f"{COMBINED_SIGS_DIR}/combinedSignatures_DBS78_V4",
+    "DBS78": f"{COMBINED_SIGS_DIR}/combinedSignatures_DBS78",
     "ID83": f"{COMBINED_SIGS_DIR}/combinedSignatures_ID83",
     "CNV48": f"{COMBINED_SIGS_DIR}/combinedSignatures_CNV48",
     "SV32": f"{COMBINED_SIGS_DIR}/combinedSignatures_SV32",
@@ -50,11 +50,11 @@ sig_dirs = {
 
 # COSMIC and other reference files
 references = {
-    "SBS288": f"{REF_DIR}/COSMIC_v3.3.1_SBS_GRCh38.txt",
-    "DBS78": f"{REF_DIR}/COSMIC_v3.3_DBS_GRCh38.txt",
-    "ID83": f"{REF_DIR}/COSMIC_v3.3_ID_GRCh37.txt",
-    "CNV48": f"{REF_DIR}/COSMIC_v3.3_CN_GRCh37.txt",
-    "SV32": f"{REF_DIR}/Breast560_rearrangement.signatures.tsv",
+    "SBS288": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3.1_SBS_GRCh38.txt",
+    "DBS78": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_DBS_GRCh38.txt",
+    "ID83": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_ID_GRCh37.txt",
+    "CNV48": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_CN_GRCh37.txt",
+    "SV32": f"{REF_SIGNATURES_DIR}/Breast560_rearrangement.signatures.tsv",
 }
 
 map_colors = {"degasperi": "darkorange", "novel": "firebrick"}
