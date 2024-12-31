@@ -1,14 +1,10 @@
-import sys, os
-import pandas as pd, numpy as np, re, tqdm
+import os
+import pandas as pd, numpy as np, tqdm
 import scipy, scipy.stats
-
 import matplotlib as mpl
-mpl.rcParams['mathtext.fontset'] = 'stix'
-mpl.rcParams['font.family'] = 'STIXGeneral'
 import matplotlib.pyplot as plt
-from pylab import cm
+from matplotlib import cm
 from matplotlib.colors import LogNorm, Normalize
-from matplotlib.lines import Line2D
 import matplotlib.colors as mcolors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from fisher import pvalue_npy
@@ -24,6 +20,8 @@ REF_DIR = os.getenv('REF_DIR')
 FIGURE_DIR = os.getenv('FIGURE_DIR')
 DATA_DIR = os.getenv('DATA_DIR')
 
+mpl.rcParams['mathtext.fontset'] = 'stix'
+mpl.rcParams['font.family'] = 'STIXGeneral'
 plt.rc('axes', labelsize=16)
 plt.rc('xtick',labelsize=16)
 plt.rc('ytick',labelsize=16)
@@ -88,12 +86,9 @@ def loadSignatures(sv_rename_deg=False):
     if sv_rename_deg: reference_map['SV32']['new'] = reference_map['SV32'].new.replace({'SV6':'SV6a'})
 
     # Get reference Degasperi 2022/2020 signatures
-    degasperi_sigs = {"SBS288": pd.read_excel('/re_gecip/cancer_pan/aeverall/data/signatures/science.abl9283_tables_s1_to_s33.xlsx',
-                                            f'Table S21').set_index('mutationClass'),
-                        "DBS78": pd.read_excel('/re_gecip/cancer_pan/aeverall/data/signatures/science.abl9283_tables_s1_to_s33.xlsx',
-                                                f'Table S22').set_index('mutationClass'),
-                        "SV32": pd.read_csv('/re_gecip/shared_allGeCIPs/pancancer_signatures/data/RefSigv1_Rearr.tsv',
-                                                sep="\t")}
+    degasperi_sigs = {"SBS288": pd.read_excel(f'{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx', 'Table S21').set_index('mutationClass'),
+                        "DBS78": pd.read_excel(f'{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx', 'Table S22').set_index('mutationClass'),
+                        "SV32": pd.read_csv(f'{DATA_DIR}/RefSigv1_Rearr.tsv', sep="\t")}
     for sig_type in degasperi_sigs:
         degasperi_sigs[sig_type] = degasperi_sigs[sig_type].loc[combined_sigs[sig_type].index]
 
@@ -119,12 +114,10 @@ def loadSignatures(sv_rename_deg=False):
     novel_map = {}
     for sig_type in combined_sigs:
         mut_type = regexSearch('([A-Z]+)([0-9]+)', sig_type, 1).replace("CNV", "CN") # type: ignore
-        # if mut_type=='CNV': mut_type='CN'
         # Count up from max_sigs
         i = max_sigs[sig_type]+1
         # Initialise novel map dictionary
         novel_map[sig_type] = {"X":"X"}
-
 
         # Get new signature labels based on COSMIC max label and current labels
         for sig in combined_sigs[sig_type].drop(mapped_sigs[sig_type], axis=1).keys():
@@ -149,8 +142,10 @@ def loadSignatures(sv_rename_deg=False):
         degasperi_map[sig_type] = iterativeMapping(combined_sigs[sig_type].drop(reference_map[sig_type].new, axis=1),
                                                 degasperi_sigs[sig_type],
                                                 mut_type=regexSearch("([A-Z]+)[0-9]+", sig_type, 1).replace("CNV", "CN"))
-    if sv_rename_deg: degasperi_map['SV32'] = pd.concat((degasperi_map['SV32'], degasperi_sv_map))
-    for sig_type in ['ID83', 'CNV48']: degasperi_map[sig_type] = pd.DataFrame.from_dict({"old":[],"new":[]})
+    if sv_rename_deg:
+        degasperi_map['SV32'] = pd.concat((degasperi_map['SV32'], degasperi_sv_map))
+    for sig_type in ['ID83', 'CNV48']:
+        degasperi_map[sig_type] = pd.DataFrame.from_dict({"old":[],"new":[]})
 
     return combined_acts, combined_sigs, {'reference':reference_map, 'degasperi':degasperi_map, 'novel': novel_map}
 
@@ -211,7 +206,7 @@ def plotSignature(ax, signature, mutation_labels, mutation_type="SBS", xticks=Tr
         context_1 = signature.index.map(lambda x: regexSearch("([A-Z])\[([A-Z>]+)\]([A-Z])",x, 1))
         snv = signature.index.map(lambda x: regexSearch("([A-Z])\[([A-Z>]+)\]([A-Z])",x, 2))
         context_2 = signature.index.map(lambda x: regexSearch("([A-Z])\[([A-Z>]+)\]([A-Z])",x, 3))
-        order = np.argsort(np.unique(snv, return_inverse=True)[1]*100 +                           np.unique(context_1, return_inverse=True)[1]*10 +                           np.unique(context_2, return_inverse=True)[1])
+        order = np.argsort(np.unique(snv, return_inverse=True)[1]*100 + np.unique(context_1, return_inverse=True)[1]*10 + np.unique(context_2, return_inverse=True)[1])
         snv = snv[order]; context_1 = context_1[order]; context_2 = context_2[order]
         signature = signature.iloc[order]
 
@@ -312,8 +307,6 @@ def plotNovelSignatures(combined_sigs, relabel_map, sv_rename_deg=False):
 
     plot_types = ['SBS288','DBS78', 'ID83','CNV48', 'SV32']
 
-    # width_ratios = [[len(relabel_map['degasperi'][sig_type])+len(relabel_map['novel'][sig_type])+1 for sig_type in plot_types[:3]],
-    #                 [len(relabel_map['degasperi'][sig_type])+len(relabel_map['novel'][sig_type])+1 for sig_type in plot_types[3:]]]
     width_ratios = [[len(relabel_map['novel'][sig_type])+1 for sig_type in plot_types[:3]],
                     [len(relabel_map['novel']['CNV48'])+1,len(combined_sigs.keys())+1]]
     for j in range(2):
@@ -326,20 +319,18 @@ def plotNovelSignatures(combined_sigs, relabel_map, sv_rename_deg=False):
     gs = fig.add_gridspec(nrows=hpixels, ncols=100, left=0.05, right=0.48,
                         wspace=0.1, hspace=0.1)
 
-    # all_axes = []
     for i, sig_type in enumerate(plot_types):
 
         j=0 if i<3 else 1
 
-        # if sig_type=='SV32': signatures = np.hstack((relabel_map['reference'][sig_type].new, relabel_map['degasperi'][sig_type].old, relabel_map['novel'][sig_type].new))
-        # else: signatures = np.hstack((relabel_map['degasperi'][sig_type].old, relabel_map['novel'][sig_type].new))
-        if (sig_type=='SV32')&sv_rename_deg: signatures = np.hstack((relabel_map['reference'][sig_type].new, relabel_map['degasperi'][sig_type].old, relabel_map['novel'][sig_type].new))
-        elif (sig_type=='SV32'): signatures = np.hstack((relabel_map['reference'][sig_type].new, relabel_map['novel'][sig_type].new))
-        else: signatures = np.hstack((relabel_map['novel'][sig_type].new))
+        if (sig_type=='SV32')&sv_rename_deg:
+            signatures = np.hstack((relabel_map['reference'][sig_type].new, relabel_map['degasperi'][sig_type].old, relabel_map['novel'][sig_type].new))
+        elif (sig_type=='SV32'):
+            signatures = np.hstack((relabel_map['reference'][sig_type].new, relabel_map['novel'][sig_type].new))
+        else:
+            signatures = np.hstack((relabel_map['novel'][sig_type].new))
         signatures = np.array(signatures)[orderSignatures(signatures)]
-        max_val = np.max(np.array(combined_sigs[sig_type]))
 
-        # type_axes = []
         for isig, sig in enumerate(signatures):
             hmin=width_ratios[j][i%3]+hpad
             hmax=width_ratios[j][i%3+1]-hpad
@@ -351,16 +342,12 @@ def plotNovelSignatures(combined_sigs, relabel_map, sv_rename_deg=False):
                 ax = fig.add_subplot(gs[
                     int(hmin+isig*(hmax-hmin)/len(signatures)):hmin+int((isig+1)*(hmax-hmin)/len(signatures))-1,60:100
                 ])
-            # type_axes.append(ax)
 
             plotSignature(ax, combined_sigs[sig_type][sig],
                         np.array(combined_sigs[sig_type].index),
                         regexSearch("([A-Z]+)[0-9+]",sig_type, 1),
                         xticks=isig==len(signatures)-1,
                         fs=24, pad=0.3)
-            # plt.ylim(0,max_val*1.05)
-            # plt.text(-0.5, ax.get_ylim()[1]*0.97, sig, ha='left', va='top', fontsize=24,
-            #          color=map_colors['novel'] if sig in list(relabel_map['novel'][sig_type].new) else map_colors['degasperi'] if sig in list(relabel_map['degasperi'][sig_type].new) else 'k')
             plt.text(-0.5, ax.get_ylim()[1]*0.97, sig, ha='left', va='top', fontsize=24,
                      color= map_colors['degasperi'] if sig in list(relabel_map['degasperi'][sig_type].old) else map_colors['novel'] if sig in list(relabel_map['novel'][sig_type].new) else 'k')
             if isig!=len(signatures)-1: ax.set_xticklabels([])
@@ -378,9 +365,8 @@ def groupSignatureActivities(sample_df, combined_acts, cohorts='tumour_group'):
     signatures = {}
     count_threshold = 20
     for sig_type in combined_acts:
-        acts = combined_acts[sig_type].copy()# if which_sigs=="combined" else decomposed_acts.copy()
+        acts = combined_acts[sig_type].copy()
 
-        # if sig_type=="DBS78":
         if True:
             acts = acts[np.sum(acts, axis=1)>=count_threshold]
 
@@ -391,6 +377,7 @@ def groupSignatureActivities(sample_df, combined_acts, cohorts='tumour_group'):
                                 left_on='sample_platekey', right_index=True)
 
         unique_tissues = np.unique(acts[cohorts])
+
         # Make plot grids:
         tables['count'][sig_type] = np.zeros((len(signatures[sig_type]), len(unique_tissues)), dtype=int)
         tables['median'][sig_type] = np.zeros((len(signatures[sig_type]), len(unique_tissues)))
@@ -465,9 +452,9 @@ def plotCohortActivities(tables, signatures, orientation='horizontal', rename_si
 
             if i<2:
                 ax.set_yticklabels([label.replace("_"," ") for label in unique_tissue_labels],
-                                fontsize=16, minor=False);
+                                fontsize=16, minor=False)
             else:
-                ax.set_yticklabels([], fontsize=16, minor=False);
+                ax.set_yticklabels([], fontsize=16, minor=False)
 
             ax.set_xlim(0,np.sum(sig_subset))
             ax.set_ylim(0,len(unique_tissues))
@@ -618,7 +605,7 @@ def squish(x, s=1):
 
 def cluster_diagram(fig, ax, fisher_stat, fisher_pv, spearman_stat, spearman_pv,
                     PVMAX=30, PVMIN=0, fs=12, use_cbar=True,
-                    cmap_sp=cm.bwr, cmap_f=cm.PRGn):
+                    cmap_sp=plt.get_cmap('bwr'), cmap_f=plt.get_cmap('PRGn')):
 
     plt.sca(ax)
 
@@ -631,7 +618,7 @@ def cluster_diagram(fig, ax, fisher_stat, fisher_pv, spearman_stat, spearman_pv,
     # sample the colormaps that you want to use. Use 128 from each so we get 256
     # colors in total
     colors1 = cmap_sp(squish(np.linspace(0., 1, 127), s=0.2))
-    colors2 = cmap_f(np.linspace(0.1, 0.9, 128))#plt.cm.bone_r(np.linspace(0., 1, 128))
+    colors2 = cmap_f(np.linspace(0.1, 0.9, 128))#plt.plt.get_cmap('bone_r')(np.linspace(0., 1, 128))
     colors2[int(np.floor((1-PVMIN/PVMAX)/2 * 128)):            int(np.ceil((1+PVMIN/PVMAX)/2 * 128))] = [1.,1.,1.,1.]
     colors = np.vstack((colors1, np.array([[0,0,0,1]]), colors2))
     map1 = mcolors.LinearSegmentedColormap.from_list('my_colormap1', colors1)
@@ -666,10 +653,6 @@ def fullClusterDiagram(combined_act_df, fisher_stat, fisher_pv, spearman_stat, s
 
     pv_sws = 0.05/(fisher_stat.shape[0]*(fisher_stat.shape[0]-1)/2)
 
-    PrOr = mcolors.LinearSegmentedColormap.from_list('PrOr',
-                                                    np.vstack((cm.Purples_r(np.linspace(0,0.7,100)),
-                                                                cm.Oranges(np.linspace(0,0.7,100))))[::-1])
-
     group_labels = {"UV":["SBS7a","SBS7b","SBS7c","SBS7d","DBS1"],
                     "Smoking":["SBS4","DBS2","ID3"],
                     "MMR":["SBS44","SBS26","SBS15","SBS57"],#,"ID12","DBS12"],
@@ -702,7 +685,7 @@ def fullClusterDiagram(combined_act_df, fisher_stat, fisher_pv, spearman_stat, s
                     spearman_stat[~nan_subset][:,~nan_subset][order][:,order],
                     spearman_pv[~nan_subset][:,~nan_subset][order][:,order],
                     PVMIN=PVMIN, PVMAX=PVMAX, fs=fs, use_cbar=True,
-                    cmap_sp=cm.bwr, cmap_f=cm.PRGn)
+                    cmap_sp=plt.get_cmap('bwr'), cmap_f=plt.get_cmap('PRGn'))
 
     ax.set_xticks(np.arange(len(order)+1), minor=True)
     ax.set_yticks(np.arange(len(order)+1), minor=True)
@@ -778,7 +761,7 @@ def clusterGroups(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearm
                                     spearman_stat[subset_indices][:,subset_indices][order][:,order],
                                     spearman_pv[subset_indices][:,subset_indices][order][:,order],
                                     PVMIN=-np.log10(pv_sws), fs=fs, use_cbar=False,
-                                    cmap_sp=cm.bwr, cmap_f=cm.PRGn)
+                                    cmap_sp=plt.get_cmap('bwr'), cmap_f=plt.get_cmap('PRGn'))
 
         ax.set_xticks(np.arange(len(order)+1), minor=True)
         ax.set_yticks(np.arange(len(order)+1), minor=True)
@@ -803,7 +786,7 @@ def clusterGroups(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearm
     ax = axes[1,1]
     cax = fig.add_axes([ax.get_position().x1+0.01, ax.get_position().y0-ax.get_position().height*1.1,
                         0.02,ax.get_position().height*1.5])
-    cbar = fig.colorbar(cm.ScalarMappable(norm=Normalize(vmin=-PVMAX, vmax=PVMAX),
+    cbar = fig.colorbar(plt.get_cmap('ScalarMappable')(norm=Normalize(vmin=-PVMAX, vmax=PVMAX),
                         cmap=mcolors.LinearSegmentedColormap.from_list('my_colormap', colors2)),
                         cax=cax, orientation='vertical')
     cbar.ax.tick_params(labelsize=fs)
@@ -811,7 +794,7 @@ def clusterGroups(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearm
 
     cax2 = fig.add_axes([ax.get_position().x1+0.01, ax.get_position().y0+ax.get_position().height*0.6,
                         0.02,ax.get_position().height*1.5])
-    cbar = fig.colorbar(cm.ScalarMappable(norm=Normalize(vmin=-1, vmax=1),
+    cbar = fig.colorbar(plt.get_cmap('ScalarMappable')(norm=Normalize(vmin=-1, vmax=1),
                                         cmap=mcolors.LinearSegmentedColormap.from_list('my_colormap', colors1)),
                         cax=cax2, orientation='vertical')
     cbar.ax.tick_params(labelsize=fs)
@@ -849,7 +832,6 @@ def clusterSets(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearman
     dendro = shc.dendrogram(Z=clusters, labels=combined_act_df.keys()[~nan_subset], no_plot=True)
 
     PVMAX=30
-    PVMIN=-np.log10(pv_sws)
 
     for i,group in enumerate(groups):#'Clock 1']):
 
@@ -875,7 +857,7 @@ def clusterSets(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearman
                                     spearman_stat[subset_indices][:,subset_indices][order][:,order],
                                     spearman_pv[subset_indices][:,subset_indices][order][:,order],
                                     PVMIN=-np.log10(pv_sws), fs=fs, use_cbar=False,
-                                    cmap_sp=cm.bwr, cmap_f=cm.PRGn)
+                                    cmap_sp=plt.get_cmap('bwr'), cmap_f=plt.get_cmap('PRGn'))
 
         ax.set_xticks(np.arange(len(order)+1), minor=True)
         ax.set_yticks(np.arange(len(order)+1), minor=True)
@@ -900,7 +882,7 @@ def clusterSets(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearman
     ax = axes[1,1]
     cax = fig.add_axes([ax.get_position().x1+0.01, ax.get_position().y0-ax.get_position().height*1.1,
                         0.02, ax.get_position().height*1.5])
-    cbar = fig.colorbar(cm.ScalarMappable(norm=Normalize(vmin=-PVMAX, vmax=PVMAX),
+    cbar = fig.colorbar(plt.get_cmap('ScalarMappable')(norm=Normalize(vmin=-PVMAX, vmax=PVMAX),
                         cmap=mcolors.LinearSegmentedColormap.from_list('my_colormap', colors2)),
                         cax=cax, orientation='vertical')
     cbar.ax.tick_params(labelsize=fs)
@@ -908,7 +890,7 @@ def clusterSets(combined_act_df, fisher_stat, fisher_pv, spearman_stat, spearman
 
     cax2 = fig.add_axes([ax.get_position().x1+0.01, ax.get_position().y0+ax.get_position().height*0.6,
                         0.02,ax.get_position().height*1.5])
-    cbar = fig.colorbar(cm.ScalarMappable(norm=Normalize(vmin=-1, vmax=1),
+    cbar = fig.colorbar(plt.get_cmap('ScalarMappable')(norm=Normalize(vmin=-1, vmax=1),
                                         cmap=mcolors.LinearSegmentedColormap.from_list('my_colormap', colors1)),
                         cax=cax2, orientation='vertical')
     cbar.ax.tick_params(labelsize=fs)
