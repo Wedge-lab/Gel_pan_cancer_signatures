@@ -16,15 +16,10 @@ dir_output=../data/genotypeSigs/${run_name}/output
 dir_output_cohort=../data/genotypeSigs/${run_name}/output_cohort
 
 filename_samples=${dir_input}/samples.tsv
-filename_signatures=${dir_input}/signatures.tsv #/re_gecip/cancer_pan/aeverall/signatures/data/activities/SBS_degasperi_activities.tsv #
+filename_signatures=${dir_input}/signatures.tsv
 filename_targets=${dir_input}/targets.tsv
 filename_tests=${dir_input}/tests.tsv
 filename_tests_binary=${dir_input}/tests_logistic.tsv
-
-# # Load in required modules
-module load bio/nextflow/22.10.5
-module load lang/Anaconda3/2021.11
-source /re_gecip/cancer_pan/aeverall/software/pySigProfiler/bin/activate
 
 # create output directory
 mkdir -p $dir_output
