@@ -8,11 +8,11 @@ min_stability=1.0
 sig_type=SV32
 max_sigs=15
 # Directory containing signatures
-sig_dir=${DATA_DIR}/Results_SigProfiler_v2/
+sig_dir=${SIG_DIR}/${sig_type}
 # Reference signatures file - column headered Type with each mutation type
 # Input signatures should be in additional columns
-reference=${DATA_DIR}/Breast560_rearrangement.signatures.tsv
-sample_file=${DATA_DIR}/sample_lists_incl_SEGs/sample_list_2021_06_29_incl_SEGs.tsv
+reference=${REF_SIGNATURES_DIR}/Breast560_rearrangement.signatures.tsv
+sample_file=${SAMPLE_LIST}
 
 dir_output=.../../combinedSignatures_${sig_type}
 cohort_file=$dir_output/cohort_list.tsv

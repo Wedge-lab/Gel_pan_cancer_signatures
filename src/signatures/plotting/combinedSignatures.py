@@ -27,6 +27,7 @@ COMBINED_SIGS_DIR = os.getenv("COMBINED_SIGS_DIR")
 REF_DIR = os.getenv("REF_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
+REF_SIGNATURES_DIR = os.getenv("REF_SIGNATURES_DIR")
 
 mpl.rcParams["mathtext.fontset"] = "stix"
 mpl.rcParams["font.family"] = "STIXGeneral"
@@ -134,12 +135,12 @@ def loadSignatures(sv_rename_deg=False):
     # Get reference Degasperi 2022/2020 signatures
     degasperi_sigs = {
         "SBS288": pd.read_excel(
-            f"{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S21"
+            f"{REF_SIGNATURES_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S21"
         ).set_index("mutationClass"),
         "DBS78": pd.read_excel(
-            f"{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S22"
+            f"{REF_SIGNATURES_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S22"
         ).set_index("mutationClass"),
-        "SV32": pd.read_csv(f"{DATA_DIR}/RefSigv1_Rearr.tsv", sep="\t"),
+        "SV32": pd.read_csv(f"{REF_SIGNATURES_DIR}/RefSigv1_Rearr.tsv", sep="\t"),
     }
     for sig_type in degasperi_sigs:
         degasperi_sigs[sig_type] = degasperi_sigs[sig_type].loc[

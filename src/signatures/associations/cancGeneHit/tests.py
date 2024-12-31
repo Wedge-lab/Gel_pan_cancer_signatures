@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DATA_DIR = os.getenv("DATA_DIR")
+GENE_LIST = os.getenv("GENE_LIST")
 
 if __name__ == "__main__":
     samples_file, signatures_file, targets_file, tests_file, tests_file_binary, n = (
@@ -22,7 +23,7 @@ if __name__ == "__main__":
     groups = pd.read_csv(samples_file, usecols=["sample_id", "group"], sep="\t")
 
     # Subset for DNA repair genes
-    DNA_repair = pd.read_csv(f"{DATA_DIR}/human-dna-repair-genes.tsv", sep="\t")
+    DNA_repair = pd.read_csv(GENE_LIST, sep="\t")
     if True:
         mock_genes = targets.keys()[
             [bool(re.search("^MOCK[0-9A-Z]+$", tgt)) for tgt in targets.keys()]

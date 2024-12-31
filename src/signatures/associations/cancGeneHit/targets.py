@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DATA_DIR = os.getenv("DATA_DIR")
+GENE_LIST = os.getenv("GENE_LIST")
 
 if __name__ == "__main__":
     samples_file, targets_file, n = sys.argv[1:]
@@ -117,7 +118,7 @@ if __name__ == "__main__":
 
     # DNA types from database
     DNA_repair = pd.merge(
-        pd.read_csv(f"{DATA_DIR}/human-dna-repair-genes.tsv", sep="\t"),
+        pd.read_csv(GENE_LIST, sep="\t"),
         pd.DataFrame(index=np.array(genes)),
         left_on="Gene",
         right_index=True,

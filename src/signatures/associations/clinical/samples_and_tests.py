@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DATA_DIR = os.getenv("DATA_DIR")
+SAMPLE_LIST = os.getenv("SAMPLE_LIST")
 
 if __name__ == "__main__":
     samples_file, activities_file = sys.argv[1:]
@@ -18,7 +19,7 @@ if __name__ == "__main__":
 
     # Get tumour group
     sample_list_df = pd.read_csv(
-        f"{DATA_DIR}/sample_lists_incl_SEGs/sample_list.tsv",
+        SAMPLE_LIST,
         usecols=[
             "participant_id",
             "tumour_sample_platekey",

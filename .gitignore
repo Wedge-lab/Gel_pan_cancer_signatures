@@ -1,5 +1,6 @@
 # Data stored in data directory
 data/
+figures/
 
 # renv packages
 renv/

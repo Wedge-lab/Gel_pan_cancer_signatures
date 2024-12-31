@@ -8,12 +8,12 @@ min_stability=1.0
 sig_type=DBS78
 max_sigs=15
 # Directory containing signatures
-sig_dir=${DATA_DIR}/SIGmats/v4/${sig_type}
+sig_dir=${SIG_DIR}/${sig_type}
 
 # COSMIC signatures file - column headered Type with each mutation type
 # Input signatures should be in additional columns
-cosmic=${DATA_DIR}/COSMIC_v3.3_DBS_GRCh38.txt
-sample_file=${DATA_DIR}/sample_lists_incl_SEGs/sample_list_2021_06_29_incl_SEGs.tsv
+cosmic=${REF_SIGNATURES_DIR}/COSMIC_v3.3_DBS_GRCh38.txt
+sample_file=${SAMPLE_LIST}
 
 dir_output=../../data/combinedSignatures_${sig_type}
 cohort_file=$dir_output/cohort_list.tsv

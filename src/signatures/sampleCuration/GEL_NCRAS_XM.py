@@ -9,6 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 DATA_DIR = os.getenv("DATA_DIR")
 RESULT_DIR = os.getenv("RESULT_DIR")
+SAMPLE_LIST = os.getenv("SAMPLE_LIST")
+for d in [DATA_DIR, RESULT_DIR, SAMPLE_LIST]:
+    if d is None:
+        raise ValueError("Environment variables not set")
 
 group_mapping = {
     "BileDuct-AdenoCA": ["adenocarcinoma"],  # cholangiocarcinoma
@@ -123,9 +127,9 @@ tissue_mapping = {
 
 def crossmatchGelNcras():
     # Import curated sample list from Alex and Dan
-    sample_df = pd.read_csv(
-        f"{RESULT_DIR}/sample_lists/sample_list_2021_06_29.tsv", delim_whitespace=True
-    ).rename(columns={"age_sampling": "age"})
+    sample_df = pd.read_csv(SAMPLE_LIST, delim_whitespace=True).rename(
+        columns={"age_sampling": "age"}
+    )
 
     # Import NCRAS data and crossmatch on tumour_pseudo_id
     sact = pd.read_csv(
