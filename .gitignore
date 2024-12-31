@@ -1,6 +1,9 @@
 # Data stored in data directory
 data/
 
+# renv packages
+renv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
