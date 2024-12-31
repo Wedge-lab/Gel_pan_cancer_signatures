@@ -1,20 +1,15 @@
-# combine signatures between cohorts
-# Iteratively add cohort extracted signatures to pan-cancer COSMIC list
-
+"combine signatures between cohorts - iteratively add cohort extracted signatures to pan-cancer COSMIC list"
 import sys, os
 import pandas as pd, numpy as np, re
 import glob
-
 import matplotlib as mpl
-mpl.rcParams['mathtext.fontset'] = 'stix'
-mpl.rcParams['font.family'] = 'STIXGeneral'
 import matplotlib.pyplot as plt
-from pylab import cm
 from matplotlib.lines import Line2D
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-
 from signatures.utils import orderSignatures
 
+mpl.rcParams['mathtext.fontset'] = 'stix'
+mpl.rcParams['font.family'] = 'STIXGeneral'
 plt.rc('axes', labelsize=16)
 plt.rc('xtick',labelsize=16)
 plt.rc('ytick',labelsize=16)
@@ -186,11 +181,10 @@ def plot_cosine_similarity(matrix, xlabels, ylabels, fs=30):
 
     plt.sca(ax)
     breaks = np.arange(0,101,5)
-    #norm = mpl.colors.BoundaryNorm(np.insert(breaks+0.001, 0, 0.), len(breaks))
     blue_cmap = mpl.colors.LinearSegmentedColormap.from_list("seg_blue",
-                                                             cm.viridis(np.linspace(0.1,1,len(breaks)-1)),
+                                                             plt.get_cmap("viridis")(np.linspace(0.1,1,len(breaks)-1)),
                                                              20)
-    blue_cmap.set_under(cm.bwr(0.5))
+    blue_cmap.set_under(plt.get_cmap("bwr")(0.5))
     im = plt.pcolor(matrix*100, cmap=blue_cmap, vmin=1e-10, vmax=100)
 
     def rect(pos, colour):
@@ -215,10 +209,10 @@ def plot_cosine_similarity(matrix, xlabels, ylabels, fs=30):
     ax.grid(True, which='minor', axis='both', linestyle='-', color='k', alpha=0.3)
 
     ax.set_xticks(np.arange(len(xlabels))+0.5, minor=False)
-    ax.set_xticklabels(xlabels, rotation=90, fontsize=fs, minor=False);
+    ax.set_xticklabels(xlabels, rotation=90, fontsize=fs, minor=False)
 
     ax.set_yticks(np.arange(len(ylabels))+0.5, minor=False)
-    ax.set_yticklabels(ylabels, fontsize=fs, minor=False);
+    ax.set_yticklabels(ylabels, fontsize=fs, minor=False)
 
     plt.subplots_adjust(wspace=0.01)
 
@@ -263,12 +257,12 @@ if __name__=='__main__':
     plt.ylim(-1,1)
 
     for idx, row in combined_maps.reset_index().iterrows():
-        old_sigs = row['old_signatures']#.split('&')
+        old_sigs = row['old_signatures']
         lost_sigs = lost_map[idx+1]
 
         r = plt.Rectangle((0., 1.025-i*0.05-(len(old_sigs)+int(len(lost_sigs)>0))*0.05),
                           1., (len(old_sigs)+int(len(lost_sigs)>0))*0.05,
-                          facecolor="none", edgecolor=cm.viridis(0.5), linewidth=2)
+                          facecolor="none", edgecolor=plt.get_cmap("viridis")(0.5), linewidth=2)
         plt.gca().add_patch(r)
 
         plt.text(0.95, 1-i*0.05-(len(old_sigs[:-1])*0.05/2), row['new_signatures'],

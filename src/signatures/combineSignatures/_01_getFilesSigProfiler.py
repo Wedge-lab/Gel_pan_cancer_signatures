@@ -1,8 +1,3 @@
-# run getFilesSigProfiler.py
-# written by Andy Everall
-#
-# Get run data for each cohort
-
 import sys
 import pandas as pd, numpy as np
 

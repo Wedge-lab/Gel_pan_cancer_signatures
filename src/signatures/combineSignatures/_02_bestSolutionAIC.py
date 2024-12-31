@@ -1,21 +1,19 @@
-# Find best solution for each cohort
-# written by Andy Everall
-
+"Find best solution for each cohort"
 import sys, os
 import pandas as pd, numpy as np
 import inspect
-
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+from SigProfilerExtractor import subroutines as sub
+
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['font.family'] = 'STIXGeneral'
-import matplotlib.pyplot as plt
-
 plt.rc('axes', labelsize=16)
 plt.rc('xtick',labelsize=16)
 plt.rc('ytick',labelsize=16)
 plt.rc('legend',fontsize=16)
 
-from SigProfilerExtractor import subroutines as sub
+
 print(f"SigProfilerAssignment file location: {inspect.getfile(sub.calculate_similarities)}")
 
 def estimate_solution(stats_df,

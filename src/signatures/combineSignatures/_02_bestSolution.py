@@ -1,11 +1,9 @@
-# Find best solution for each cohort
-# written by Andy Everall
-
+"Find best solution for each cohort"
 import sys, os
 import pandas as pd, numpy as np
 import inspect
-
 from SigProfilerExtractor import subroutines as sub
+
 print(f"SigProfilerAssignment file location: {inspect.getfile(sub.calculate_similarities)}")
 
 def estimate_solution(stats_df,
