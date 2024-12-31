@@ -15,7 +15,7 @@ This should reduce the Type-I error induced by extreme outliers in the data.
 ## Pipeline
 
 '''
-nextflow run /re_gecip/cancer_pan/aeverall/code/signatures/signatureAssociations.nf -with-trace -resume  \
+nextflow run src/signatures/signatureAssociations.nf -with-trace -resume  \
         --filename_tests ${filename_tests} \
         --filename_signatures ${filename_signatures} \
         --filename_targets ${filename_targets} \

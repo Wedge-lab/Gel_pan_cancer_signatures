@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DATA_DIR = os.getenv("DATA_DIR")
-RESULTS_DIR = os.getenv("RESULTS_DIR")
+RESULT_DIR = os.getenv("RESULT_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 
 mpl.rcParams['mathtext.fontset'] = 'stix'
@@ -289,14 +289,11 @@ def plotFractions(sample_list, nonzero_counts, combined_acts,
 
 if __name__=='__main__':
 
-    publish_dir = "/re_gecip/shared_allGeCIPs/pancancer_signatures/results/figs"
-    if not os.path.exists(publish_dir): os.mkdir(publish_dir)
-
     # Combined signatures as reference
     combined_acts, combined_sigs, relabel_map = loadSignatures()
 
     # Load in samples
-    sample_list = pd.read_csv("/re_gecip/cancer_pan/aeverall/results/signatures/MutationTimeRmatricesVCFs/input/manifest.tsv",
+    sample_list = pd.read_csv(f"{RESULT_DIR}/signatures/MutationTimeRmatricesVCFs/input/manifest.tsv",
                             sep="\t", names=['platekey', 'group', 'vcf', 'timer_vcf', 'id'])
     # Replace Connective with Sarcoma
     sample_list.group = sample_list.group.str.replace("Connective","Sarcoma")
@@ -304,8 +301,8 @@ if __name__=='__main__':
     sample_list.set_index('platekey', inplace=True)
 
     # Load mutation matrices for MutationTimeR groups
-    full_matrix_df = loadMatrices(sample_list, sig_types = ['SBS288', 'DBS78', 'ID83'], #groups=groups,
-                                    matrix_dir="/re_gecip/cancer_pan/aeverall/results/signatures/MutationTimeRmatricesVCFs/output/")
+    full_matrix_df = loadMatrices(sample_list, sig_types = ['SBS288', 'DBS78', 'ID83'],
+                                    matrix_dir=f"{RESULT_DIR}/signatures/MutationTimeRmatricesVCFs/output/")
 
     # Transform mutation matrices from mutation classes to signatures
     R, R_sample = getSigMutationRates(sample_list, combined_acts, combined_sigs, full_matrix_df)
@@ -341,7 +338,7 @@ if __name__=='__main__':
                                                                 0:"rank_late"}, axis=1),
                         on=['signature', 'group'], how='inner')
         timer_df = pd.concat((timer_df, pd.merge(pv_df, rank_df, on=['signature', 'group'], how='inner')))
-    timer_df.to_csv(f"{RESULTS_DIR}/exportData/mutationTimeR.tsv", sep="\t",
+    timer_df.to_csv(f"{RESULT_DIR}/exportData/mutationTimeR.tsv", sep="\t",
                     index=False)
 
     # Plot clonal fraction and rank statistics

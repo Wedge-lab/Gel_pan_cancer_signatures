@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 FIGURE_DIR = os.getenv("FIGURE_DIR")
+RESULT_DIR = os.getenv("RESULT_DIR")
 
 default_colours = plt.rcParams['axes.prop_cycle'].by_key()['color']
 mpl.rcParams['mathtext.fontset'] = 'stix'
@@ -133,13 +134,13 @@ if __name__=='__main__':
     # ## Load results
     run_name = "clinical_tumour-group_InDelQC_nb"
 
-    results_dir = f"/re_gecip/shared_allGeCIPs/pancancer_signatures/results/associations/clinicalSigs/{run_name}/output"
+    results_dir = f"{RESULT_DIR}/results/associations/clinicalSigs/{run_name}/output"
     results_zinb = pd.read_csv(f"{results_dir}/signature_target_assoc_nb.csv")
     results_log0 = pd.read_csv(f"{results_dir}/signature_target_assoc_logistic.csv")
     results_target = pd.read_csv(f"{results_dir}/target_target_assoc.csv")
     fig_dir = f"{results_dir}/figures"
 
-    input_dir = f"/re_gecip/cancer_pan/aeverall/results/clinicalSigs/{run_name}/input/"
+    input_dir = f"{RESULT_DIR}/results/clinicalSigs/{run_name}/input/"
     samples_file = f"{input_dir}/samples.tsv"
     samples_cohort_file = f"{input_dir}/samples_cohort.tsv"
     signatures_file = f"{input_dir}/signatures.tsv"
@@ -331,13 +332,12 @@ if __name__=='__main__':
 
     run_name = "clinical_tumour-group_InDelQC_nb"
 
-    results_dir = f"/re_gecip/cancer_pan/aeverall/results/clinicalSigs/{run_name}/output"
+    results_dir = f"{RESULT_DIR}/results/clinicalSigs/{run_name}/output"
     results_zinb = pd.read_csv(f"{results_dir}/signature_target_assoc_nb.csv")
     results_log0 = pd.read_csv(f"{results_dir}/signature_target_assoc_logistic.csv")
     results_target = pd.read_csv(f"{results_dir}/target_target_assoc.csv")
     fig_dir = f"{results_dir}/figures"
 
-    # results_dir_cohort = f"/re_gecip/cancer_pan/aeverall/results/clinicalSigs/{run_name}/output_cohort"
     results_dir_cohort = f"/re_gecip/shared_allGeCIPs/pancancer_signatures/results/associations/clinicalSigs/{run_name}/output_cohort"
     results_zinb = pd.concat((results_zinb, pd.read_csv(f"{results_dir_cohort}/signature_target_assoc_zinb.csv")))
     results_log0 = pd.concat((results_log0, pd.read_csv(f"{results_dir_cohort}/signature_target_assoc_logistic.csv")))

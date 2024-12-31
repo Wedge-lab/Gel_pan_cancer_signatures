@@ -16,7 +16,7 @@ dir_input=../data/cancGeneHits/${run_name}/input
 dir_output=../data/cancGeneHits/${run_name}/output
 
 filename_samples=${dir_input}/samples.tsv
-filename_signatures=${dir_input}/signatures.tsv #/re_gecip/cancer_pan/aeverall/signatures/data/activities/SBS_degasperi_activities.tsv #
+filename_signatures=${dir_input}/signatures.tsv
 filename_targets=${dir_input}/targets.tsv
 filename_tests=${dir_input}/tests.tsv
 filename_tests_binary=${dir_input}/tests_logistic.tsv

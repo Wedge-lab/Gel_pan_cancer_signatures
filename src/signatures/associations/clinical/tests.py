@@ -1,9 +1,6 @@
 # Import standard modules
 import sys, pandas as pd
 
-import socket
-base = "" if socket.gethostname().split(".")[1]=='cluster' else "/home/aeverall"
-
 if __name__=="__main__":
 
     samples_file, samples_cohort_file, signatures_file, targets_file, targets_cohort_file, \

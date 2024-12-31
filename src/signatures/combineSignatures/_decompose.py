@@ -1,16 +1,7 @@
-# combine signatures between cohorts
-# written by Andy Everall
-#
-# Iteratively add cohort extracted signatures to pan-cancer COSMIC list
-
-print("Importing modules")
+"Combine signatures between cohorts"
 import sys, os
 import pandas as pd
-
-
-print("Importing SigProfiler")
-sys.path.append("/re_gecip/cancer_pan/aeverall/software/localSigProfiler/SigProfilerAssignment")
-import Analyzer as Analyze
+import SigProfilerAssignment.Analyzer as Analyze
 
 def decompose_and_analyze(args):
 

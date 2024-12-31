@@ -1,6 +1,10 @@
 import sys
 import pandas as pd, numpy as np
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+RESULT_DIR = os.getenv("RESULT_DIR")
 
 if __name__=='__main__':
 
@@ -33,8 +37,8 @@ if __name__=='__main__':
             stats_df["activities_decomposed_file"] = [f"{row.cohort_dir}/All_Solutions/{sig_type}_{sig}_Signatures/Decompose_Solution/Activities/Decompose_Solution_Activities.txt" for sig in stats_df.signatures]
         elif sig_type=='SBSCNV':
             # CAN'T RUN AIC WITH CNV BECAUSE SIGNATURE DECOMPOSITION AND ASSIGNMENT HASN'T HAPPENED FOR ALL SOLUTIONS :
-            stats_df["signatures_decomposed_file"] = [f"/re_gecip/cancer_pan/aeverall/results/signatures/decomposedSignatures/decomposed_CNV48_COSMICref/{row.cohort}/{sig}/Decompose_Solution/Signatures/Decompose_Solution_Signatures.txt" for sig in stats_df.signatures]
-            stats_df["activities_decomposed_file"] = [f"/re_gecip/cancer_pan/aeverall/results/signatures/decomposedSignatures/decomposed_CNV48_COSMICref/{row.cohort}/{sig}/Decompose_Solution/Activities/Decompose_Solution_Activities.txt" for sig in stats_df.signatures]
+            stats_df["signatures_decomposed_file"] = [f"{RESULT_DIR}/results/signatures/decomposedSignatures/decomposed_CNV48_COSMICref/{row.cohort}/{sig}/Decompose_Solution/Signatures/Decompose_Solution_Signatures.txt" for sig in stats_df.signatures]
+            stats_df["activities_decomposed_file"] = [f"{RESULT_DIR}/results/signatures/decomposedSignatures/decomposed_CNV48_COSMICref/{row.cohort}/{sig}/Decompose_Solution/Activities/Decompose_Solution_Activities.txt" for sig in stats_df.signatures]
         else:
             stats_df["signatures_decomposed_file"] = [f"{row.cohort_dir}/{sig}_Signatures/{sig_type}/Suggested_Solution/COSMIC_{sig_type}_Decomposed_Solution/Signatures/COSMIC_{sig_type}_Signatures.txt" for sig in stats_df.signatures]
             stats_df["activities_decomposed_file"] = [f"{row.cohort_dir}/{sig}_Signatures/{sig_type}/Suggested_Solution/COSMIC_{sig_type}_Decomposed_Solution/Activities/COSMIC_{sig_type}_Activities_refit.txt" for sig in stats_df.signatures]
