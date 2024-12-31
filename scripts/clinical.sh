@@ -1,9 +1,7 @@
 #!/bin/bash
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
-# parameters
-PROJECT_DIR=../workdir
+source ../.env
 
 # directories and filenames
 run_name=clinical_tumour-group_InDelQC_nb

@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 RESULT_DIR = os.getenv("RESULT_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
+SAMPLE_LIST = os.getenv("SAMPLE_LIST")
 
 
 def getSamples(
@@ -37,7 +38,7 @@ def getSamples(
         "day_last_followup",
     ]
     sample_df = pd.read_csv(
-        f"{RESULT_DIR}/sample_lists_incl_SEGs/sample_list_2021_06_29.tsv",
+        f"{SAMPLE_LIST}",
         usecols=sample_keys,
         delim_whitespace=True,
     ).rename(columns={"age_sampling": "age"})

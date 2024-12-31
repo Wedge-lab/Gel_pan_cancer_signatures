@@ -1,13 +1,10 @@
 #!/bin/bash
 # run cancGeneHits.nf
 
+#!/bin/bash
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
 source ../../.env
-
-# parameters
-PROJECT_DIR=../workdir
 
 # Run parameters
 n_files=10000 # Max number of files to run (input a small number if just testing)

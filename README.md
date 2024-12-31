@@ -3,7 +3,22 @@ Code and results for paper:
 
 [Comprehensive repertoire of the chromosomal alteration and mutational signatures across 16 cancer types from 10,983 cancer patients](doi.org/10.1101/2023.06.07.23290970)
 
-Disclaimer: This code was written inside the Genomics England Research Environment without github and it has not been tested outside the research environment. We provide it here to aid the transparency of the publication and make our analysis methods more accessible and reproducible. The pipelines provided will almost certainly not be of significant use outside Genomics England, however, we hope users find pieces of code which help to understand our work and may be useful in their research.
+Disclaimer: This code was written inside the Genomics England Research Environment without github and it has not been tested outside the research environment. We provide it here to aid the transparency of the publication and make our analysis methods more accessible and reproducible. The pipelines provided will almost certainly not be of significant use outside Genomics England, however, we hope users find pieces of code helpful to understand our work and useful in their research.
+
+# Getting started
+
+Clone the repository
+`git clone https://github.com/Wedge-lab/Gel_pan_cancer_signatures.git`
+
+Create .env file
+```
+cd Gel_pan_cancer_signatures
+cp .env-template .env
+```
+in `.env`, change all file names as required to your local files.
+
+Run editable install on a fresh conda environment (python=3.9)
+`pip install -e .`
 
 
 # Contained in this repository

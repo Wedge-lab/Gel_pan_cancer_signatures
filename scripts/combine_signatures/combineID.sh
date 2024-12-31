@@ -2,19 +2,22 @@
 # Iteratively add cohort extracted signatures to pan-cancer COSMIC list
 
 #!/bin/bash
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd $parent_path
+source ../../.env
 
 min_stability=1.0
 # Signature type
 sig_type=ID83
 max_sigs=25
 # Directory containing signatures
-sig_dir=${DATA_DIR}/SIGmats/v3/${sig_type} #v2_draft/${sig_type}
+sig_dir=${SIG_DIR}/${sig_type}
 # COSMIC signatures file - column headered Type with each mutation type
 # Input signatures should be in additional columns
-reference=${DATA_DIR}/COSMIC_v3.3_ID_GRCh37.txt
-sample_file=${DATA_DIR}/sample_lists_incl_SEGs/sample_list_2021_06_29_incl_SEGs.tsv
+reference=${REF_SIGNATURES_DIR}/COSMIC_v3.3_ID_GRCh37.txt
+sample_file=${SAMPLE_LIST}
 
-dir_output=../../data/combinedSignatures_${sig_type}
+dir_output=${COMBINED_SIGS_DIR}/combinedSignatures_${sig_type}
 cohort_file=$dir_output/cohort_list.tsv
 
 # create input and output data directories

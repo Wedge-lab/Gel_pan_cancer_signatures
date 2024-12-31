@@ -1,13 +1,19 @@
+import os
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy
 import scipy.stats
+from dotenv import load_dotenv
 from lifelines import CoxPHFitter, KaplanMeierFitter
 from lifelines.statistics import logrank_test
 
 from signatures.plotting.combinedSignatures import loadSignatures, signatureRenamer
+
+load_dotenv()
+SAMPLE_LIST = os.getenv("SAMPLE_LIST")
 
 mpl.rcParams["mathtext.fontset"] = "stix"
 mpl.rcParams["font.family"] = "STIXGeneral"
@@ -106,7 +112,7 @@ if __name__ == "__main__":
 
     # Add tumour type
     tumour_type = pd.read_csv(
-        "/re_gecip/shared_allGeCIPs/pancancer_signatures/results/sample_lists_incl_SEGs/sample_list_2021_06_29.tsv",
+        f"{SAMPLE_LIST}",
         sep="\t",
         usecols=[
             "participant_id",

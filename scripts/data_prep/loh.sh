@@ -3,11 +3,7 @@
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
-source ../.env
-
-# parameters
-PROJECT_DIR=../workdir
+source ../../.env
 
 # Run parameters
 chunk_size=100 # Number of samples to run on a single process
@@ -25,7 +21,7 @@ mkdir -p $dir_analysis/input
 mkdir -p $dir_output
 
 # Battenberg file list
-awk 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}{ print $(f["tumour_sample_platekey"])"\t"$(f["filename_cna"]) }' /re_gecip/cancer_pan/fprefect/botl/results/sample_lists/sample_list_2021_06_29.tsv | sed 's/filename_cna/filename_batt/' > ${filename_battenberg_list}
+awk 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}{ print $(f["tumour_sample_platekey"])"\t"$(f["filename_cna"]) }' ${SAMPLE_LIST} | sed 's/filename_cna/filename_batt/' > ${filename_battenberg_list}
 
 # Gene regions from
 echo -e "chrom\tstart\tend\tgene_id" > ${filename_genes}

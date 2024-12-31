@@ -3,9 +3,7 @@
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
-# parameters
-PROJECT_DIR=../workdir
+source ../../.env
 
 # directories and filenames
 dir_analysis=CLINVAR_DIR

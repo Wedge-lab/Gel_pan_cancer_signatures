@@ -24,9 +24,9 @@ from signatures.utils import regexSearch
 
 load_dotenv()
 COMBINED_SIGS_DIR = os.getenv("COMBINED_SIGS_DIR")
-REF_DIR = os.getenv("REF_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
+REF_SIGNATURES_DIR = os.getenv("REF_SIGNATURES_DIR")
 
 mpl.rcParams["mathtext.fontset"] = "stix"
 mpl.rcParams["font.family"] = "STIXGeneral"
@@ -40,7 +40,7 @@ default_colours = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 # Signature directories
 sig_dirs = {
     "SBS288": f"{COMBINED_SIGS_DIR}/combinedSignatures_SBS288",
-    "DBS78": f"{COMBINED_SIGS_DIR}/combinedSignatures_DBS78_V4",
+    "DBS78": f"{COMBINED_SIGS_DIR}/combinedSignatures_DBS78",
     "ID83": f"{COMBINED_SIGS_DIR}/combinedSignatures_ID83",
     "CNV48": f"{COMBINED_SIGS_DIR}/combinedSignatures_CNV48",
     "SV32": f"{COMBINED_SIGS_DIR}/combinedSignatures_SV32",
@@ -49,11 +49,11 @@ sig_dirs = {
 
 # COSMIC and other reference files
 references = {
-    "SBS288": f"{REF_DIR}/COSMIC_v3.3.1_SBS_GRCh38.txt",
-    "DBS78": f"{REF_DIR}/COSMIC_v3.3_DBS_GRCh38.txt",
-    "ID83": f"{REF_DIR}/COSMIC_v3.3_ID_GRCh37.txt",
-    "CNV48": f"{REF_DIR}/COSMIC_v3.3_CN_GRCh37.txt",
-    "SV32": f"{REF_DIR}/Breast560_rearrangement.signatures.tsv",
+    "SBS288": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3.1_SBS_GRCh38.txt",
+    "DBS78": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_DBS_GRCh38.txt",
+    "ID83": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_ID_GRCh37.txt",
+    "CNV48": f"{REF_SIGNATURES_DIR}/COSMIC_v3.3_CN_GRCh37.txt",
+    "SV32": f"{REF_SIGNATURES_DIR}/Breast560_rearrangement.signatures.tsv",
 }
 
 map_colors = {"degasperi": "darkorange", "novel": "firebrick"}
@@ -134,12 +134,12 @@ def loadSignatures(sv_rename_deg=False):
     # Get reference Degasperi 2022/2020 signatures
     degasperi_sigs = {
         "SBS288": pd.read_excel(
-            f"{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S21"
+            f"{REF_SIGNATURES_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S21"
         ).set_index("mutationClass"),
         "DBS78": pd.read_excel(
-            f"{DATA_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S22"
+            f"{REF_SIGNATURES_DIR}/science.abl9283_tables_s1_to_s33.xlsx", "Table S22"
         ).set_index("mutationClass"),
-        "SV32": pd.read_csv(f"{DATA_DIR}/RefSigv1_Rearr.tsv", sep="\t"),
+        "SV32": pd.read_csv(f"{REF_SIGNATURES_DIR}/RefSigv1_Rearr.tsv", sep="\t"),
     }
     for sig_type in degasperi_sigs:
         degasperi_sigs[sig_type] = degasperi_sigs[sig_type].loc[

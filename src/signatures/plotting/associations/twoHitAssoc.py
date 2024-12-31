@@ -23,6 +23,7 @@ load_dotenv()
 RESULT_DIR = os.getenv("RESULT_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
+GENE_LIST = os.getenv("GENE_LIST")
 
 mpl.rcParams["mathtext.fontset"] = "stix"
 mpl.rcParams["font.family"] = "STIXGeneral"
@@ -361,7 +362,7 @@ def getAssociationResults(results_dir, DNA_repair):
     print(len(results_combined))
 
     DNArepair = pd.read_csv(
-        "/re_gecip/shared_allGeCIPs/pancancer_signatures/data/human-dna-repair-genes.tsv",
+        GENE_LIST,
         sep="\t",
     )
     results_combined = pd.merge(
@@ -2198,7 +2199,7 @@ if __name__ == "__main__":
     test_df.group = test_df.group.str.replace("Connective", "Sarcoma")
 
     # Subset DNA repair gene list
-    DNA_repair = pd.read_csv(f"{DATA_DIR}/human-dna-repair-genes.tsv", sep="\t")
+    DNA_repair = pd.read_csv(GENE_LIST, sep="\t")
     DNA_repair = DNA_repair[DNA_repair.Gene.map(lambda x: x in target_df.keys())]
     Types = [
         "BER",

@@ -4,19 +4,20 @@
 #!/bin/bash
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
+source ../../.env
 
 min_stability=1.0
 # Signature type
 sig_type=CNV48
 # Directory containing signatures
-sig_dir=${DATA_DIR}/copy_number_signatures/SigProfilerCNV48
+sig_dir=${SIG_DIR}/${sig_type}
 # COSMIC signatures file - column headered Type with each mutation type
 # Input signatures should be in additional columns
 # If there aren't any COSMIC reference signatures or extracting signatures deNovo, only include the Type column
-reference=${DATA_DIR}/COSMIC_v3.3_CN_GRCh37.txt
-sample_file=${DATA_DIR}/sample_lists_incl_SEGs/sample_list_2021_06_29_incl_SEGs.tsv
+reference=${REF_SIGNATURES_DIR}/COSMIC_v3.3_CN_GRCh37.txt
+sample_file=${SAMPLE_LIST}
 
-dir_output=../../data/combinedSignatures_${sig_type}
+dir_output=${COMBINED_SIGS_DIR}/combinedSignatures_${sig_type}
 cohort_file=$dir_output/cohort_list.tsv
 
 # create input and output data directories
