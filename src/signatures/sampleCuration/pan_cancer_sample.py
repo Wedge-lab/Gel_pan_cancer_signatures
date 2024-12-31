@@ -38,7 +38,7 @@ def getSamples(
         "day_last_followup",
     ]
     sample_df = pd.read_csv(
-        SAMPLE_LIST,
+        f"{SAMPLE_LIST}",
         usecols=sample_keys,
         delim_whitespace=True,
     ).rename(columns={"age_sampling": "age"})

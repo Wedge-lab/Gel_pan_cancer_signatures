@@ -3,11 +3,7 @@
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
-source ../.env
-
-# parameters
-PROJECT_DIR=../workdir
+source ../../.env
 
 # Run parameters
 chunk_size=100 # Number of samples to run on a single process

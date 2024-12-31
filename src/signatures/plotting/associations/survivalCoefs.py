@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     # Add tumour type
     tumour_type = pd.read_csv(
-        SAMPLE_LIST,
+        f"{SAMPLE_LIST}",
         sep="\t",
         usecols=[
             "participant_id",

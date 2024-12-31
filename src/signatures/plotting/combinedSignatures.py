@@ -24,7 +24,6 @@ from signatures.utils import regexSearch
 
 load_dotenv()
 COMBINED_SIGS_DIR = os.getenv("COMBINED_SIGS_DIR")
-REF_DIR = os.getenv("REF_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
 REF_SIGNATURES_DIR = os.getenv("REF_SIGNATURES_DIR")

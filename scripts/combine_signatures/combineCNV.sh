@@ -4,6 +4,7 @@
 #!/bin/bash
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
+source ../../.env
 
 min_stability=1.0
 # Signature type

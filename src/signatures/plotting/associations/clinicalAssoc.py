@@ -521,7 +521,7 @@ if __name__ == "__main__":
     plt.xlim(-2.5, 2.5)
 
     plt.xlabel(r"$\beta$", fontsize=fs)
-    publish_fig("clinical_panel", publish=FIGURE_DIR)
+    publish_fig("clinical_panel", publish=f"{FIGURE_DIR}")
 
     # ## Histology
 
@@ -533,7 +533,9 @@ if __name__ == "__main__":
     results_target = pd.read_csv(f"{results_dir}/target_target_assoc.csv")
     fig_dir = f"{results_dir}/figures"
 
-    results_dir_cohort = f"/re_gecip/shared_allGeCIPs/pancancer_signatures/results/associations/clinicalSigs/{run_name}/output_cohort"
+    results_dir_cohort = (
+        f"{RESULT_DIR}/associations/clinicalSigs/{run_name}/output_cohort"
+    )
     results_zinb = pd.concat(
         (
             results_zinb,
@@ -708,4 +710,4 @@ if __name__ == "__main__":
         plt.sca(ax)
         plt.axis("off")
 
-    publish_fig("histology_rate_comparison", publish=FIGURE_DIR)
+    publish_fig("histology_rate_comparison", publish=f"{FIGURE_DIR}")

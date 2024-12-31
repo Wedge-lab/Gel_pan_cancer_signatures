@@ -3,11 +3,7 @@
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
-source ../.env
-
-# parameters
-PROJECT_DIR=../../workdir
+source ../../.env
 
 # directories and filenames
 dir_analysis=../../data/cancGeneHits/somatic
