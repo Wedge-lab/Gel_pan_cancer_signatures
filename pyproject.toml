@@ -19,15 +19,18 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11"
 ]
-requires-python = ">=3.8.1"
+requires-python = "~=3.9.0"
 dynamic = ["version"]
 
 dependencies = [
     "python-dotenv",
-    "numpy==2.2.1",
-    "pandas==2.2.3",
-    "matplotlib==3.10.0",
-    "lifelines==0.30.0",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "lifelines",
+    "SigProfilerExtractor==1.1.16",
+    "SigProfilerAssignment==0.0.19",
+
 ]
 
 [project.optional-dependencies]
