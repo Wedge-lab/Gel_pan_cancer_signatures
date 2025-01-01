@@ -28,7 +28,7 @@ dependencies = [
     "pandas",
     "matplotlib",
     "lifelines",
-    "SigProfilerExtractor==1.1.16",
+    "SigProfilerExtractor==1.1.25",
     "SigProfilerAssignment==0.0.19",
 
 ]
