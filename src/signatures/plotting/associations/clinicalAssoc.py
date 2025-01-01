@@ -6,11 +6,11 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.stats
-from dotenv import load_dotenv
 from matplotlib import cm
 from matplotlib.lines import Line2D
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import (
     loadSignatures,
     map_colors,
@@ -18,7 +18,7 @@ from signatures.plotting.combinedSignatures import (
 )
 from signatures.utils import BH_threshold, orderSignatures
 
-load_dotenv()
+load_environment()
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 RESULT_DIR = os.getenv("RESULT_DIR")
 

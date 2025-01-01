@@ -4,9 +4,10 @@ import os
 
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 
-load_dotenv()
+from signatures.config import load_environment
+
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 RESULT_DIR = os.getenv("RESULT_DIR")
 SAMPLE_LIST = os.getenv("SAMPLE_LIST")

@@ -4,11 +4,11 @@ import sys
 import numpy as np
 import pandas as pd
 import scipy.stats
-from dotenv import load_dotenv
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import sig_dirs
 
-load_dotenv()
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 
 if __name__ == "__main__":

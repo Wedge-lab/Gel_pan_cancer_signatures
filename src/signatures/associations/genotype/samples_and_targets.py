@@ -5,14 +5,14 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 
-from signatures.associations.sampleCuration.pan_cancer_sample import getSamples
+from signatures.config import load_environment
+from signatures.sampleCuration.pan_cancer_sample import getSamples
+
+load_environment()
+DATA_DIR = os.getenv("DATA_DIR")
 
 warnings.filterwarnings("ignore")
-
-load_dotenv()
-DATA_DIR = os.getenv("DATA_DIR")
 
 if __name__ == "__main__":
     samples_file, targets_file = sys.argv[1:]

@@ -7,9 +7,9 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.stats
-from dotenv import load_dotenv
 from matplotlib import cm
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import (
     loadSignatures,
     map_colors,
@@ -17,7 +17,7 @@ from signatures.plotting.combinedSignatures import (
 )
 from signatures.utils import orderSignatures, regexSearch
 
-load_dotenv()
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 RESULT_DIR = os.getenv("RESULT_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")

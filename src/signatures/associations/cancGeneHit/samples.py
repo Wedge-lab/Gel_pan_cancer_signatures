@@ -3,11 +3,11 @@ import sys
 
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 
+from signatures.config import load_environment
 from signatures.sampleCuration.pan_cancer_sample import getSamples
 
-load_dotenv()
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 
 

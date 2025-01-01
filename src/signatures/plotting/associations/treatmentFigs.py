@@ -7,12 +7,12 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.stats
-from dotenv import load_dotenv
 from matplotlib.colors import LogNorm
 from matplotlib.lines import Line2D
 from matplotlib.patches import Ellipse
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import (
     loadSignatures,
     publish_fig,
@@ -20,7 +20,7 @@ from signatures.plotting.combinedSignatures import (
 )
 from signatures.utils import BenjiminiHochberg
 
-load_dotenv()
+load_environment()
 RESULT_DIR = os.getenv("RESULT_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 

@@ -6,13 +6,13 @@ import numpy as np
 import pandas as pd
 import scipy
 import scipy.stats
-from dotenv import load_dotenv
 from lifelines import CoxPHFitter, KaplanMeierFitter
 from lifelines.statistics import logrank_test
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import loadSignatures, signatureRenamer
 
-load_dotenv()
+load_environment()
 SAMPLE_LIST = os.getenv("SAMPLE_LIST")
 
 mpl.rcParams["mathtext.fontset"] = "stix"
