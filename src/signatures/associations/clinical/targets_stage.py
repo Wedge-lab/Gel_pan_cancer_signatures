@@ -4,11 +4,11 @@ import sys
 
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 
+from signatures.config import load_environment
 from signatures.utils import regexSearch
 
-load_dotenv()
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 
 if __name__ == "__main__":

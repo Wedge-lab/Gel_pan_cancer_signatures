@@ -9,17 +9,18 @@ import numpy as np
 import pandas as pd
 import SigProfilerAssignment
 import SigProfilerExtractor
-from dotenv import load_dotenv
 from SigProfilerAssignment import Analyzer as Analyze
 from SigProfilerAssignment import decompose_subroutines
 
+from signatures.config import load_environment
 from signatures.utils import regexSearch
 
 print(f"SigProfilerAssignment file location: {inspect.getfile(Analyze.decompose_fit)}")
 print(f"Extractor version {SigProfilerExtractor.__version__}")
 print(f"Assignment version {SigProfilerAssignment.__version__}")
 
-load_dotenv()
+
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 
 

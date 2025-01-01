@@ -4,11 +4,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 from matplotlib import cm
 from matplotlib.colors import Normalize
 
-load_dotenv()
+from signatures.config import load_environment
+
+load_environment()
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 
 mpl.rcParams["mathtext.fontset"] = "stix"

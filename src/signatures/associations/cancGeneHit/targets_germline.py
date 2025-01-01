@@ -4,9 +4,10 @@ import sys
 import numpy as np
 import pandas as pd
 import scipy.stats
-from dotenv import load_dotenv
 
-load_dotenv()
+from signatures.config import load_environment
+
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 GENE_LIST = f"{DATA_DIR}/DNA_repair_genes.tsv"
 

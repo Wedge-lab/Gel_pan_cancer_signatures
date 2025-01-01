@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import tqdm
-from dotenv import load_dotenv
 
+from signatures.config import load_environment
 from signatures.plotting.combinedSignatures import publish_fig, sig_dirs
 from signatures.utils import regexSearch
 
-load_dotenv()
+load_environment()
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")
 

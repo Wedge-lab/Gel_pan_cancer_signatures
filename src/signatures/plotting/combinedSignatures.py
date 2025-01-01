@@ -9,7 +9,6 @@ import scipy
 import scipy.cluster.hierarchy as shc
 import scipy.stats
 import tqdm
-from dotenv import load_dotenv
 from fisher import pvalue_npy
 from matplotlib import cm
 from matplotlib.colors import LogNorm, Normalize
@@ -20,9 +19,10 @@ from signatures.combineSignatures._03_combineSignatures import (
     cosineSimilarity,
     orderSignatures,
 )
+from signatures.config import load_environment
 from signatures.utils import regexSearch
 
-load_dotenv()
+load_environment()
 COMBINED_SIGS_DIR = os.getenv("COMBINED_SIGS_DIR")
 FIGURE_DIR = os.getenv("FIGURE_DIR")
 DATA_DIR = os.getenv("DATA_DIR")

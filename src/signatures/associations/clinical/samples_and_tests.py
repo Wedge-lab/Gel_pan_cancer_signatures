@@ -2,9 +2,10 @@ import os
 import sys
 
 import pandas as pd
-from dotenv import load_dotenv
 
-load_dotenv()
+from signatures.config import load_environment
+
+load_environment()
 DATA_DIR = os.getenv("DATA_DIR")
 SAMPLE_LIST = os.getenv("SAMPLE_LIST")
 
