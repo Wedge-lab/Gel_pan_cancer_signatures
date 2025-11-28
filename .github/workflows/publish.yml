@@ -13,3 +13,5 @@ jobs:
       PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
     env:
       PIP_NO_CACHE_DIR: 1
+    post: |
+      rm -rf build/ dist/ *.egg-info
