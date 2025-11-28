@@ -11,3 +11,5 @@ jobs:
     secrets:
       PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
       PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    env:
+      PIP_NO_CACHE_DIR: 1
