@@ -7,7 +7,7 @@ jobs:
   publish:
     uses: microsoft/action-python/.github/workflows/publish.yml@0.7.3
     with:
-      python_version: "3.9"
+      python_version: "3.11"
     secrets:
       PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
       PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
