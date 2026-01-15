@@ -1,11 +1,17 @@
 name: Python Publish Workflow
+
 on:
   workflow_call:
 
 jobs:
   publish:
     uses: microsoft/action-python/.github/workflows/publish.yml@0.7.3
+    with:
+      python_version: "3.11"
     secrets:
+      PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
       PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      TEST_PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD  }}
-
+    env:
+      PIP_NO_CACHE_DIR: 1
+    post: |
+      rm -rf build/ dist/ *.egg-info
